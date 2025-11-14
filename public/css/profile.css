@@ -1,21 +1,167 @@
+/* --- ANIMATIONS --- */
+
+/* Bubble animation */
+@keyframes bubble {
+    0% { transform: translateY(0) scale(0.5); opacity: 0; }
+    50% { opacity: 0.6; }
+    100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+}
+
+/* Container floating animation */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* FANCY: Animated water background */
+@keyframes animated-water {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* FANCY: Fish swimming animation */
+@keyframes swim {
+    0% { transform: translateX(-100px) scaleX(1); }
+    49% { transform: translateX(110vw) scaleX(1); }
+    /* Flip the fish */
+    50% { transform: translateX(110vw) scaleX(-1); }
+    99% { transform: translateX(-100px) scaleX(-1); }
+    100% { transform: translateX(-100px) scaleX(1); }
+}
+
+/* --- BODY & BUBBLES --- */
+
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #f5f6fa;
-  color: #333;
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  color: #e3f9ff;
+  overflow: hidden; /* Hide overflowing fish/bubbles */
+  position: relative;
+  
+  /* FANCY: Animated Gradient Background */
+  background: linear-gradient(135deg, #2196f3, #4fc3f7, #00bcd4, #2196f3);
+  background-size: 400% 400%; /* Make gradient large for smooth animation */
+  animation: animated-water 15s ease infinite;
 }
+
+/* Bubble generators (10 total) */
+body::before, body::after,
+.container::before, .container::after,
+header::before, header::after,
+.about::before, .about::after,
+.container > .about::before, .container > .about::after { 
+    content: '';
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: bubble 15s infinite ease-out;
+    bottom: -30px;
+    opacity: 0;
+    z-index: -1;
+}
+
+/* Bubble randomizer styles */
+body::before { width: 15px; height: 15px; left: 10%; animation-duration: 18s; animation-delay: 0s; }
+body::after { width: 25px; height: 25px; left: 80%; animation-duration: 20s; animation-delay: 5s; }
+.container::before { width: 12px; height: 12px; left: 40%; animation-duration: 16s; animation-delay: 3s; }
+.container::after { width: 20px; height: 20px; left: 65%; animation-duration: 14s; animation-delay: 7s; }
+header::before { width: 18px; height: 18px; left: 20%; animation-duration: 17s; animation-delay: 2s; }
+header::after { width: 10px; height: 10px; left: 90%; animation-duration: 13s; animation-delay: 4s; }
+.about::before { width: 14px; height: 14px; left: 30%; animation-duration: 19s; animation-delay: 6s; }
+.about::after { width: 16px; height: 16px; left: 75%; animation-duration: 15s; animation-delay: 9s; }
+.container > .about::before { width: 22px; height: 22px; left: 50%; animation-duration: 22s; animation-delay: 11s; }
+.container > .about::after { width: 8px; height: 8px; left: 5%; animation-duration: 12s; animation-delay: 1s; }
+
+
+/* --- PAGE CONTENT --- */
 
 header {
-  background-color: #005f99;
+  background-color: rgba(0, 0, 0, 0.5);
   color: white;
   text-align: center;
-  padding: 20px;
+  padding: 25px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.5);
+  position: relative;
+  z-index: 10;
 }
 
-/* This is the new section you were asked to add */
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+  position: relative;
+  animation: float 8s ease-in-out infinite;
+  z-index: 10;
+}
+
 .about {
-  background-color: #ffffff; /* Example background color */
-  color: #1a1a1a;          /* Example font color */
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #e3f9ff;
   font-size: 1.25em;
-  padding: 20px;
+  padding: 25px 35px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px) brightness(1.1);
+  -webkit-backdrop-filter: blur(5px) brightness(1.1);
+  text-align: center;
+  position: relative;
+}
+
+.about h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.about p {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    line-height: 1.6;
+}
+
+/* --- FANCY FISH STYLES --- */
+
+.fish-tank {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: 1; /* Fish swim behind content */
+}
+
+.fish {
+    position: absolute;
+    width: 50px;
+    height: 30px;
+    background-color: #ff9800; /* Orange */
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; /* Fishy shape */
+    animation: swim 20s linear infinite;
+}
+
+/* Fish tail */
+.fish::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 15px solid #ff9800; /* Orange tail */
+    left: -10px;
+    top: 5px;
+}
+
+/* Second fish - different color, speed, and position */
+.fish-2 {
+    top: 60%;
+    background-color: #f44336; /* Red */
+    animation-duration: 25s; /* Slower */
+    animation-delay: 5s; /* Starts later */
+}
+.fish-2::after {
+    border-left-color: #f44336; /* Red tail */
 }
